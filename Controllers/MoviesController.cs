@@ -9,8 +9,26 @@ namespace road_to_asp.Controllers
         {
             var movie = new Movie();
             //return NotFound();
-            //return new EmptyResult();
+            //return new EmptyResults();
             return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name" });
+        }
+        public IActionResult Edit(int id)
+        {
+            return Content("id=" + id);
+        }
+
+        // movies
+        public IActionResult Index(int? pageIndex, string sortBy)
+        {
+            if (!pageIndex.HasValue)
+            {
+                pageIndex = 1;
+            }
+            if (String.IsNullOrWhiteSpace(sortBy))
+            {
+                sortBy = "Name";
+            }
+            return Content(String.Format("pageIndex={0}&sortBy={1}", pageIndex, sortBy));
         }
     }
 }
