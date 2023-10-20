@@ -8,7 +8,9 @@ namespace road_to_asp.Controllers
         public IActionResult Random()
         {
             var movie = new Movie();
-            return View(movie);
+            //return NotFound();
+            //return new EmptyResult();
+            return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name" });
         }
     }
 }

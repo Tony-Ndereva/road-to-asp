@@ -7,6 +7,7 @@
         public Movie()
         {
             this.Name = "Shrek!";
+            this.Id = 3;
         }
     }
 }
