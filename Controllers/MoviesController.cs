@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Controller;
 using road_to_asp.Models;
 
 namespace road_to_asp.Controllers
@@ -18,7 +17,7 @@ namespace road_to_asp.Controllers
             return Content("id=" + id);
         }
 
-        // movies
+
         public IActionResult Index(int? pageIndex, string sortBy)
         {
             if (!pageIndex.HasValue)
@@ -32,9 +31,14 @@ namespace road_to_asp.Controllers
             return Content(String.Format("pageIndex={0}&sortBy={1}", pageIndex, sortBy));
         }
 
-       public IActionResult ByReleaseDate(int year, byte month)
+        //this is attribute-based routing
+        // movies
+
+        [Route("movies/released/{year}/{month}")]
+        public IActionResult ByReleaseYear(int year, byte month)
         {
             return Content(year + "/" + month);
+
         }
 
     }

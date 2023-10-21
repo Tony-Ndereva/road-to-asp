@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
+
 using road_to_asp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,13 +35,15 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name:"MoviesByReleaseDate",
-    pattern:"movies/released/{year}/{month}",
-    new {controller = "Movies", action = "ByReleaseDate"},
-    new {year = @"\d{4}", month = @"\d{2}" });
+//Below is convention-based routing
+//app.MapControllerRoute(
+//    name:"MoviesByReleaseDate",
+//    pattern:"movies/released/{year}/{month}",
+//    new {controller = "Movies", action = "ByReleaseDate"},
+//    new {year = @"\d{4}", month = @"\d{2}" });
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
