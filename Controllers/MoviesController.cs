@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using road_to_asp.Models;
+using road_to_asp.ViewModels;
 
 namespace road_to_asp.Controllers
 {
@@ -8,14 +9,26 @@ namespace road_to_asp.Controllers
         public IActionResult Random()
         {
             var movie = new Movie();
+            var customers = new List<Customer> 
+            { 
+            new Customer {Name = "John Smith",Id = 1 },
+            new Customer{Name = "Robert Smith" ,Id = 2 }
+            };
+
+
+            var viewModel = new RandomMovieViewModel
+            {
+                Movie = movie,
+                Customers = customers
+            };
             //return NotFound();
             //return new EmptyResults();
             //return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name" });
-           
-           // 2 blocks of code below shows how to use viewdata to pass data to views
+
+            // 2 blocks of code below shows how to use viewdata to pass data to views
             //ViewData["Movie"] = movie;
             //return View();
-            return View(movie);
+            return View(viewModel);
         }
         public IActionResult Edit(int id)
         {
