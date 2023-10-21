@@ -10,7 +10,12 @@ namespace road_to_asp.Controllers
             var movie = new Movie();
             //return NotFound();
             //return new EmptyResults();
-            return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name" });
+            //return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name" });
+           
+           // 2 blocks of code below shows how to use viewdata to pass data to views
+            //ViewData["Movie"] = movie;
+            //return View();
+            return View(movie);
         }
         public IActionResult Edit(int id)
         {
