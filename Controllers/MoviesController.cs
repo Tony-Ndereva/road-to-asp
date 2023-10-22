@@ -9,8 +9,8 @@ namespace road_to_asp.Controllers
         public IActionResult Random()
         {
             var movie = new Movie();
-            var customers = new List<Customer> 
-            { 
+            var customers = new List<Customer>
+            {
             new Customer {Name = "John Smith",Id = 1 },
             new Customer{Name = "Robert Smith" ,Id = 2 }
             };

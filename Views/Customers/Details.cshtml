@@ -1,0 +1,13 @@
+﻿
+@model road_to_asp.ViewModels.CustomersViewModel
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Name</h1>
+
+@foreach(var customer in Model.Customers)
+{
+    <p>@customer.Name</p>
+}

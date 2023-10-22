@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
-
-namespace road_to_asp.Models
+﻿namespace road_to_asp.Models
 {
     public class Customer
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
     }
 }
