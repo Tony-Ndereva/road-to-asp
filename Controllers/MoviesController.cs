@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using road_to_asp.Models;
+using road_to_asp.Services;
 using road_to_asp.ViewModels;
 
 namespace road_to_asp.Controllers
 {
+
     public class MoviesController : Controller
     {
+        [Route("movies/random")]
         public IActionResult Random()
         {
             var movie = new Movie();
-            var customers = new List<Customer>
-            {
-            new Customer {Name = "John Smith",Id = 1 },
-            new Customer{Name = "Robert Smith" ,Id = 2 }
-            };
+            var customers = new CustomerList().GetCustomers();
 
 
             var viewModel = new RandomMovieViewModel
