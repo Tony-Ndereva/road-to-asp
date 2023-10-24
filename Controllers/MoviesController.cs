@@ -11,7 +11,7 @@ namespace road_to_asp.Controllers
         [Route("movies/random")]
         public IActionResult Random()
         {
-            var movie = new Movie();
+            var movie = new MovieList().GetMovies();
             var customers = new CustomerList().GetCustomers();
 
 
