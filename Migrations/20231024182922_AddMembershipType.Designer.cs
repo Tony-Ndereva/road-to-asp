@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using road_to_asp.Data;
 
@@ -11,9 +12,11 @@ using road_to_asp.Data;
 namespace road_to_asp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231024182922_AddMembershipType")]
+    partial class AddMembershipType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +254,7 @@ namespace road_to_asp.Migrations
 
             modelBuilder.Entity("road_to_asp.Models.MembershipType", b =>
                 {
-                    b.Property<byte>("MembershipTypeId")
+                    b.Property<byte>("MemberShipTypeId")
                         .HasColumnType("tinyint");
 
                     b.Property<byte>("DiscountRate")
@@ -263,9 +266,9 @@ namespace road_to_asp.Migrations
                     b.Property<short>("SignUpFee")
                         .HasColumnType("smallint");
 
-                    b.HasKey("MembershipTypeId");
+                    b.HasKey("MemberShipTypeId");
 
-                    b.ToTable("MembershipTypes");
+                    b.ToTable("MembershipType");
                 });
 
             modelBuilder.Entity("road_to_asp.Models.Movie", b =>
