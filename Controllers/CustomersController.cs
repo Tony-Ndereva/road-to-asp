@@ -37,7 +37,7 @@ namespace road_to_asp.Controllers
         [Route("customer/details/{id}")]
         public IActionResult Details(int? id)
         {
-            var customers = _context.Customers.ToList();
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
             var viewModel = new CustomersViewModel();
 
             var customer = customers.FirstOrDefault(c => c.CustomerId == id);
