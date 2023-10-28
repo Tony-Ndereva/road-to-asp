@@ -12,5 +12,5 @@
 
 @foreach(var customer in Model.Customers)
 {
-    <a class="block" asp-action="Details" asp-controller="Customers" asp-route-id= "@customer.Id">@customer.Name</a>
+    <a class="block" asp-action="Details" asp-controller="Customers" asp-route-id= "@customer.CustomerId">@customer.Name</a>
 }

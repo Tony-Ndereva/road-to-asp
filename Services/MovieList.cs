@@ -9,8 +9,8 @@ namespace road_to_asp.Services
         {
             this._movies = new List<Movie>
             {
-             new Movie {Name = "Shrek!",Id = 1 },
-             new Movie {Name = "Snowfall", Id = 2}
+             new Movie {Name = "Shrek!",MovieId = 1 },
+             new Movie {Name = "Snowfall", MovieId = 2}
             };
         }
 

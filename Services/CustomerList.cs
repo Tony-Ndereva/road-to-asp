@@ -1,4 +1,5 @@
-﻿using road_to_asp.Models;
+﻿using road_to_asp.Data;
+using road_to_asp.Models;
 
 namespace road_to_asp.Services
 {
@@ -9,8 +10,8 @@ namespace road_to_asp.Services
         {
             this._Customers = new List<Customer>
             {
-             new Customer {Name = "John Smith",Id = 1 },
-            new Customer{Name = "Robert Smith" ,Id = 2 }
+             new Customer {Name = "John Smith",CustomerId = 1 },
+            new Customer{Name = "Robert Smith" ,CustomerId = 2 }
             };
         }
         public List<Customer> GetCustomers()

@@ -28,7 +28,7 @@ namespace road_to_asp.Controllers
             var customers = new CustomerList().GetCustomers();
             var viewModel = new CustomersViewModel();
 
-            var customer = customers.FirstOrDefault(c => c.Id == id);
+            var customer = customers.FirstOrDefault(c => c.CustomerId == id);
 
             if (customer != null)
             {
