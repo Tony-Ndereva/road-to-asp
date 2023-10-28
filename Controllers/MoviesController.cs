@@ -72,13 +72,13 @@ namespace road_to_asp.Controllers
         [Route("movies/AllMovies")]
         public IActionResult AllMovies()
         {
-            var movies = _context.Movies.ToList();
+            var movies = _context.Movies.Include(m => m.Genre).ToList();
             return View(movies);
         }
         [Route("movies/Details/{id}")]
         public IActionResult Details(int? id)
         {
-            var movies = _context.Movies.ToList();
+            var movies = _context.Movies.Include(m => m.Genre).ToList();
             var movie = movies.FirstOrDefault(m => id == m.MovieId);
 
             return View(movie);
