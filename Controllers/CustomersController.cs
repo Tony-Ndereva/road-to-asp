@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using road_to_asp.Data;
 using road_to_asp.Models;
 using road_to_asp.Services;
 using road_to_asp.ViewModels;
@@ -8,12 +10,22 @@ namespace road_to_asp.Controllers
 
     public class CustomersController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        public CustomersController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
         [Route("customers/AllCustomers")]
         public IActionResult AllCustomers()
         {
-          
 
-            var customers = new CustomerList().GetCustomers();
+
+            var customers = _context.Customers.Include(c => c.MembershipType).ToList();
 
 
             var viewModel = new CustomersViewModel()
@@ -25,7 +37,7 @@ namespace road_to_asp.Controllers
         [Route("customer/details/{id}")]
         public IActionResult Details(int? id)
         {
-            var customers = new CustomerList().GetCustomers();
+            var customers = _context.Customers.ToList();
             var viewModel = new CustomersViewModel();
 
             var customer = customers.FirstOrDefault(c => c.CustomerId == id);

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using road_to_asp.Data;
 using road_to_asp.Models;
 using road_to_asp.Services;
 using road_to_asp.ViewModels;
@@ -8,11 +9,20 @@ namespace road_to_asp.Controllers
 
     public class MoviesController : Controller
     {
+        private readonly ApplicationDbContext _context;
+        public MoviesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
         [Route("movies/random")]
         public IActionResult Random()
         {
-            var movie = new MovieList().GetMovies();
-            var customers = new CustomerList().GetCustomers();
+            var movie = _context.Movies.ToList();
+            var customers = _context.Customers.ToList();
 
 
             var viewModel = new RandomMovieViewModel
