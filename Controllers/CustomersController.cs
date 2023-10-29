@@ -48,11 +48,12 @@ namespace road_to_asp.Controllers
                 return View(viewModel);
             }
             return NotFound();
-
-
-
-
         }
+        public IActionResult New(){
+            
+            return View();
+        }
+
 
 
     }
