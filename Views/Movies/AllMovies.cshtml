@@ -24,7 +24,7 @@
                 <td class="block">
                     <a style="text-decoration:none" asp-action="Details" asp-controller="Movies" asp-route-id="@movie.MovieId">@movie.Name</a>
                 </td>
-                <td>@movie.Genre.Name</td>
+                <td style="text-transform:capitalize">@movie.Genre.Name</td>
             </tr>
         }
     </tbody>
