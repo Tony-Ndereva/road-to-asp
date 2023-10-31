@@ -50,8 +50,16 @@ namespace road_to_asp.Controllers
             return NotFound();
         }
         public IActionResult New(){
+
+            var membershipTypes = _context.MembershipTypes.ToList();
             
-            return View();
+            var viewModel = new NewCustomerViewModel 
+            {
+            MembershipTypes = membershipTypes,
+            Customer = new Customer()
+            };
+
+            return View(viewModel);
         }
 
 
