@@ -23,8 +23,9 @@
             @Html.CheckBoxFor(m => m.Customer.IsSubscribedToNewsletter) Subscribed to Newsletter
         </label>
         <div class="form-group">
-            @Html.LabelFor(m => m.Customer.MembershipTypeId)
-            @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes, "CustomerId", "Name"),"Select Membership TYpe")
+           @Html.LabelFor(m => m.Customer.MembershipTypeId)
+           @Html.DropDownListFor(m => m.Customer.MembershipTypeId,new SelectList(Model.MembershipTypes, "MembershipTypeId", "Name"), "Select Membership",new {@class = "form-control"})
         </div>
+        <button type="submit" class="btn btn-primary">Save</button>
     </div>
 }

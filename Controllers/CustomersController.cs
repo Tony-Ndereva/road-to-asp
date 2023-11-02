@@ -52,7 +52,7 @@ namespace road_to_asp.Controllers
         public IActionResult New(){
 
             var membershipTypes = _context.MembershipTypes.ToList();
-            
+           
             var viewModel = new NewCustomerViewModel 
             {
             MembershipTypes = membershipTypes,
@@ -60,6 +60,13 @@ namespace road_to_asp.Controllers
             };
 
             return View(viewModel);
+        }
+        [HttpPost] 
+        public IActionResult Create(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+            return RedirectToAction("AllCustomers", "Customers");
         }
 
 
