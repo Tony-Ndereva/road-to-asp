@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using road_to_asp.Data;
 using road_to_asp.Models;
@@ -53,13 +54,13 @@ namespace road_to_asp.Controllers
 
             var membershipTypes = _context.MembershipTypes.ToList();
            
-            var viewModel = new NewCustomerViewModel 
+            var viewModel = new CustomerFormViewModel 
             {
             MembershipTypes = membershipTypes,
             Customer = new Customer()
             };
 
-            return View(viewModel);
+            return View("CustomerForm",viewModel);
         }
         [HttpPost] 
         public IActionResult Create(Customer customer)
@@ -69,6 +70,22 @@ namespace road_to_asp.Controllers
             return RedirectToAction("AllCustomers", "Customers");
         }
 
+        public IActionResult Edit( int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c => c.CustomerId == id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new CustomerFormViewModel
+            {
+                Customer = customer,
+                MembershipTypes = _context.MembershipTypes.ToList(),
+            };
+            return View("CustomerForm", viewModel);
+            
+        }
 
 
     }

@@ -28,7 +28,7 @@
         {
             <tr>
                 <td class="block">
-                    <a style="text-decoration:none" asp-action="Details" asp-controller="Customers" asp-route-id="@customer.CustomerId">@customer.Name</a>
+                    <a style="text-decoration:none" asp-action="Edit" asp-controller="Customers" asp-route-id="@customer.CustomerId">@customer.Name</a>
                 </td>
                 <td>@customer.MembershipType.Name</td>
                 <td>@customer.MembershipType.DiscountRate%</td>

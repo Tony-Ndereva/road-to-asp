@@ -12,8 +12,8 @@
     <h1>@Model.Name</h1>
     <ul>
         <li class="capitalize">Genre: @Model.Genre.Name</li>
-        <li>Release Date: @Model.ReleaseDate</li>
-        <li>Date Added: @Model.DateAdded</li>
+        <li>Release Date: @String.Format("{0:dd MMMM yyyy}", @Model.ReleaseDate)</li>
+        <li>Date Added: @String.Format("{0:dd MMMM yyyy}", @Model.DateAdded)</li>
         <li>Number in Stock: @Model.NumberInStock</li>
     </ul>
 
