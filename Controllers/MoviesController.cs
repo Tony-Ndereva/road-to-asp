@@ -40,11 +40,46 @@ namespace road_to_asp.Controllers
             //return View();
             return View(viewModel);
         }
+        public IActionResult New()
+        {
+            var genres = _context.Genres.ToList();
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = genres,
+
+            };
+            return View("MoviesForm", viewModel);
+        }
         public IActionResult Edit(int id)
         {
-            return Content("id=" + id);
+            var movie = _context.Movies.Single(m => m.MovieId == id);
+            var viewModel = new MovieFormViewModel()
+            {
+                Movie = movie,
+                Genres = _context.Genres.ToList(),
+            };
+            return View("MoviesForm", viewModel);
         }
+        [HttpPost]
+        public IActionResult Save(Movie movie)
+        {
+            if(movie.MovieId == 0)
+            {
+                _context.Movies.Add(movie);
+            }
+            else
+            {
+                var movieInDb = _context.Movies.Single(m => m.MovieId == movie.MovieId);
+                
+                movieInDb.Name = movie.Name;
+                movieInDb.NumberInStock = movie.NumberInStock;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+            }
+            _context.SaveChanges();
 
+            return RedirectToAction("AllMovies", "Movies");
+        }
 
         public IActionResult Index(int? pageIndex, string sortBy)
         {
@@ -84,6 +119,7 @@ namespace road_to_asp.Controllers
             return View(movie);
 
         }
+
 
     }
 }

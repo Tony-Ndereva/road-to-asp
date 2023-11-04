@@ -5,6 +5,8 @@
 
 <h1>All Movies</h1>
 
+<a asp-action="New"asp-controller="Movies">New Movie</a>
+
 <table class="table table-bordered table-hover">
 
     <thead>
@@ -22,7 +24,7 @@
         {
             <tr>
                 <td class="block">
-                    <a style="text-decoration:none" asp-action="Details" asp-controller="Movies" asp-route-id="@movie.MovieId">@movie.Name</a>
+                    <a style="text-decoration:none" asp-action="Edit" asp-controller="Movies" asp-route-id="@movie.MovieId">@movie.Name</a>
                 </td>
                 <td style="text-transform:capitalize">@movie.Genre.Name</td>
             </tr>
