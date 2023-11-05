@@ -65,18 +65,31 @@ namespace road_to_asp.Controllers
         [HttpPost] 
         public IActionResult Save(Customer customer)
         {
-            if(customer.CustomerId == 0)
-            {
-                _context.Customers.Add(customer);
-            }
+
+            if (!ModelState.IsValid)
+
+                {
+                    var viewModel = new CustomerFormViewModel
+                    {
+                        Customer = customer,
+                        MembershipTypes = _context.MembershipTypes.ToList()
+                    };
+                    return View("CustomerForm", viewModel);
+                }
+            
+            if (customer.CustomerId == 0)
+                {
+                    _context.Customers.Add(customer);
+                }
+            
             else
-            {
-                var customerInDb = _context.Customers.Single(c => c.CustomerId == customer.CustomerId);
-                customerInDb.Name = customer.Name;
-                customerInDb.BirthDate = customer.BirthDate;
-                customerInDb.MembershipTypeId = customer.MembershipTypeId;
-                customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            }
+                {
+                    var customerInDb = _context.Customers.Single(c => c.CustomerId == customer.CustomerId);
+                    customerInDb.Name = customer.Name;
+                    customerInDb.BirthDate = customer.BirthDate;
+                    customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                    customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+                }
             _context.SaveChanges();
             return RedirectToAction("AllCustomers", "Customers");
         }
