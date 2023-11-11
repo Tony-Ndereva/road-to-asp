@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using road_to_asp.Data;
 using road_to_asp.Models;
-using road_to_asp.Services;
 using road_to_asp.ViewModels;
 
 namespace road_to_asp.Controllers
@@ -12,10 +10,12 @@ namespace road_to_asp.Controllers
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CustomersController> _logger;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context, ILogger<CustomersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
         protected override void Dispose(bool disposing)
         {
@@ -50,51 +50,58 @@ namespace road_to_asp.Controllers
             }
             return NotFound();
         }
-        public IActionResult New(){
+        public IActionResult New()
+        {
 
             var membershipTypes = _context.MembershipTypes.ToList();
-           
-            var viewModel = new CustomerFormViewModel 
+
+            var viewModel = new CustomerFormViewModel
             {
-            MembershipTypes = membershipTypes,
-            Customer = new Customer()
+                MembershipTypes = membershipTypes,
+                Customer = new Customer()
             };
 
-            return View("CustomerForm",viewModel);
+            return View("CustomerForm", viewModel);
         }
-        [HttpPost] 
+        [HttpPost]
         public IActionResult Save(Customer customer)
         {
 
             if (!ModelState.IsValid)
-
+            {
+                foreach (var key in ModelState.Keys)
                 {
-                    var viewModel = new CustomerFormViewModel
+                    foreach (var error in ModelState[key].Errors)
                     {
-                        Customer = customer,
-                        MembershipTypes = _context.MembershipTypes.ToList()
-                    };
-                    return View("CustomerForm", viewModel);
+                        _logger.LogError($"Model error for {key}: {error.ErrorMessage}");
+                    }
                 }
-            
+                var viewModel = new CustomerFormViewModel
+                {
+                    Customer = customer,
+                    MembershipTypes = _context.MembershipTypes.ToList()
+                };
+                return View("CustomerForm", viewModel);
+            }
+
             if (customer.CustomerId == 0)
-                {
-                    _context.Customers.Add(customer);
-                }
-            
+            {
+                _context.Customers.Add(customer);
+            }
+
             else
-                {
-                    var customerInDb = _context.Customers.Single(c => c.CustomerId == customer.CustomerId);
-                    customerInDb.Name = customer.Name;
-                    customerInDb.BirthDate = customer.BirthDate;
-                    customerInDb.MembershipTypeId = customer.MembershipTypeId;
-                    customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-                }
+            {
+                var customerInDb = _context.Customers.Single(c => c.CustomerId == customer.CustomerId);
+                customerInDb.Name = customer.Name;
+                customerInDb.BirthDate = customer.BirthDate;
+                customerInDb.MembershipTypeId = customer.MembershipTypeId;
+                customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+            }
             _context.SaveChanges();
             return RedirectToAction("AllCustomers", "Customers");
         }
 
-        public IActionResult Edit( int id)
+        public IActionResult Edit(int id)
         {
 
             var customer = _context.Customers.SingleOrDefault(c => c.CustomerId == id);
@@ -110,7 +117,7 @@ namespace road_to_asp.Controllers
                 MembershipTypes = _context.MembershipTypes.ToList(),
             };
             return View("CustomerForm", viewModel);
-            
+
         }
 
 
