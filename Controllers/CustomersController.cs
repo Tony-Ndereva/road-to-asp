@@ -66,7 +66,7 @@ namespace road_to_asp.Controllers
         [HttpPost]
         public IActionResult Save(Customer customer)
         {
-
+            customer.Name = customer.Name.ToLower();
             if (!ModelState.IsValid)
             {
                 foreach (var key in ModelState.Keys)
