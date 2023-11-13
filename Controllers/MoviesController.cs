@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using road_to_asp.Data;
 using road_to_asp.Models;
-using road_to_asp.Services;
 using road_to_asp.ViewModels;
 
 namespace road_to_asp.Controllers
@@ -43,8 +42,10 @@ namespace road_to_asp.Controllers
         public IActionResult New()
         {
             var genres = _context.Genres.ToList();
+            var movie = new Movie();
             var viewModel = new MovieFormViewModel
             {
+                Movie = movie,
                 Genres = genres,
 
             };
@@ -63,14 +64,25 @@ namespace road_to_asp.Controllers
         [HttpPost]
         public IActionResult Save(Movie movie)
         {
-            if(movie.MovieId == 0)
+            if (movie.Name != null)
+                movie.Name = movie.Name.ToLower();
+            if (!ModelState.IsValid)
+            {
+                var viewModel = new MovieFormViewModel()
+                {
+                    Movie = movie,
+                    Genres = _context.Genres.ToList(),
+                };
+                return View("MoviesForm", viewModel);
+            }
+            if (movie.MovieId == 0)
             {
                 _context.Movies.Add(movie);
             }
             else
             {
                 var movieInDb = _context.Movies.Single(m => m.MovieId == movie.MovieId);
-                
+
                 movieInDb.Name = movie.Name;
                 movieInDb.NumberInStock = movie.NumberInStock;
                 movieInDb.GenreId = movie.GenreId;
