@@ -10,9 +10,11 @@ namespace road_to_asp.Controllers
     public class MoviesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public MoviesController(ApplicationDbContext context)
+        private readonly ILogger<CustomersController> _logger;
+        public MoviesController(ApplicationDbContext context, ILogger<CustomersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
         protected override void Dispose(bool disposing)
         {
@@ -68,6 +70,13 @@ namespace road_to_asp.Controllers
                 movie.Name = movie.Name.ToLower();
             if (!ModelState.IsValid)
             {
+                foreach (var key in ModelState.Keys)
+                {
+                    foreach (var error in ModelState[key].Errors)
+                    {
+                        _logger.LogError($"Model error for {key}: {error.ErrorMessage}");
+                    }
+                }
                 var viewModel = new MovieFormViewModel()
                 {
                     Movie = movie,
