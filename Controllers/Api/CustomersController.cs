@@ -20,7 +20,7 @@ namespace road_to_asp.Controllers.Api
             return _context.Customers.ToList();
         }
 
-        // GET /api/customers/1
+        [HttpGet("{id}")]
         public ActionResult<Customer> GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.CustomerId == id);
@@ -66,19 +66,19 @@ namespace road_to_asp.Controllers.Api
             return customerInDb;
         }
 
-        // DELET /api/customer/1
-        [HttpDelete]
-        public void DeleteCustomer(int id)
+        // DELETE /api/customer/1
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCustomer(int id)
         {
             var customerInDb = _context.Customers.Single(c => c.CustomerId == id);
             if (customerInDb == null)
             {
-                throw new Ex
+                return NotFound();
             }
             _context.Customers.Remove(customerInDb);
             _context.SaveChanges();
-            return customerInDb;
 
+            return Ok(new { message = $"Customer {customerInDb.Name} deleted successfully" });
 
         }
 
