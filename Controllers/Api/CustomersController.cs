@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using road_to_asp.Data;
+using road_to_asp.Dtos;
 using road_to_asp.Models;
 
 namespace road_to_asp.Controllers.Api
@@ -9,15 +11,17 @@ namespace road_to_asp.Controllers.Api
     public class CustomersController : ControllerBase
     {
         private ApplicationDbContext _context;
+
         public CustomersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // GET /api/customers
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers()
         {
-            return _context.Customers.ToList();
+            var customers = _context.Customers.ToList();
+            return customers.Select(c => Mapper.Map<Customer, CustomerDto>);
         }
 
         [HttpGet("{id}")]
@@ -70,7 +74,8 @@ namespace road_to_asp.Controllers.Api
         [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(int id)
         {
-            var customerInDb = _context.Customers.Single(c => c.CustomerId == id);
+
+            var customerInDb = _context.Customers.SingleOrDefault(c => c.CustomerId == id);
             if (customerInDb == null)
             {
                 return NotFound();
