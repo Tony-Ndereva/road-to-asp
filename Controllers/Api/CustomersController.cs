@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using road_to_asp.Data;
 using road_to_asp.Dtos;
@@ -11,46 +13,51 @@ namespace road_to_asp.Controllers.Api
     public class CustomersController : ControllerBase
     {
         private ApplicationDbContext _context;
+        private IMapper _mapper;
 
-        public CustomersController(ApplicationDbContext context)
+        public CustomersController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET /api/customers
         public IEnumerable<CustomerDto> GetCustomers()
         {
-            var customers = _context.Customers.ToList();
-            return customers.Select(c => Mapper.Map<Customer, CustomerDto>);
+
+            return _context.Customers.ProjectTo<CustomerDto>(_mapper.ConfigurationProvider).ToList();
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Customer> GetCustomer(int id)
+        public ActionResult<CustomerDto> GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.CustomerId == id);
             if (customer == null)
             {
                 return NotFound();
             }
-            return customer;
+            return Ok(_mapper.Map<Customer, CustomerDto>(customer));
         }
 
         // POST /api/customers
         [HttpPost]
-        public ActionResult<Customer> CreateCustomer(Customer customer)
+        public ActionResult<CustomerDto> CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest();
             }
+            var customer = _mapper.Map<CustomerDto, Customer>(customerDto);
             _context.Customers.Add(customer);
             _context.SaveChanges();
-            return customer;
+
+            customerDto.CustomerId = customer.CustomerId;
+            return Created(new Uri(HttpContext.Request.GetDisplayUrl() + "/" + customer.CustomerId), customerDto);
         }
 
         // PUT /api/customers/1
         [HttpPut]
-        public ActionResult<Customer> UpdateCustomer(int id, Customer customer)
+        public ActionResult<Customer> UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
             {
@@ -61,10 +68,11 @@ namespace road_to_asp.Controllers.Api
             {
                 return NotFound();
             }
-            customerInDb.Name = customer.Name;
-            customer.BirthDate = customer.BirthDate;
-            customer.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            _mapper.Map(customerDto, customerInDb);
+            /* customerInDb.Name = customerDto.Name;
+             customerDto.BirthDate = customerDto.BirthDate;
+             customerDto.IsSubscribedToNewsletter = customerDto.IsSubscribedToNewsletter;
+             customerInDb.MembershipTypeId = customerDto.MembershipTypeId;*/
             _context.SaveChanges();
 
             return customerInDb;

@@ -1,5 +1,4 @@
-﻿using road_to_asp.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace road_to_asp.Dtos
 {
@@ -11,7 +10,7 @@ namespace road_to_asp.Dtos
         [StringLength(255)]
         public string Name { get; set; }
 
-        [Min18YearsIfAMember]
+        // [Min18YearsIfAMember]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
