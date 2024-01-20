@@ -10,14 +10,15 @@
 
     </style>
 
-    <table class="table table-bordered table-hover">
+    <table id ="customers" class="table table-bordered table-hover">
 
         <thead>
 
             <tr>
                 <th>Customer</th>
-                <th>Memebership Type</th>
+                <th>Membership Type</th>
                 <th>Discount Rate</th>
+                <th>Delete</th>
             </tr>
 
         </thead>
@@ -32,8 +33,31 @@
                 </td>
                 <td style="text-decoration:none">@customer.MembershipType.Name</td>
                 <td>@customer.MembershipType.DiscountRate%</td>
+                <td>
+                    <button data-customer-id = "@customer.CustomerId" class =" btn-link js-delete">Delete</button>
+                </td>
             </tr>
         }
         </tbody>
     </table>
 
+
+   @section scripts {
+<script>
+
+    $(document).ready(function () {
+        $("#customers .js-delete").on("click", function () {
+            var button = $(this);
+            if (confirm("Are you sure?")) {
+                $.ajax({
+                    url:"/api/customers/" + button.attr("data-customer-id"),
+                    method:"DELETE",
+                    success: function (){
+                        button.parents("tr").remove();
+                    }
+                })
+            }
+        })
+    })
+</script>
+   }
